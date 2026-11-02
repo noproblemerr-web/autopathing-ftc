@@ -1,0 +1,1774 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AutoPathingFTC — Visual Path Planner for FTC</title>
+  <style>
+    /* =========================================================================
+       EMBEDDED OFFLINE MINECRAFT PIXEL FONTS (SILKSCREEN + PIXELIFY SANS)
+       ========================================================================= */
+    @font-face {
+      font-family: 'PixelFont';
+      font-style: normal;
+      font-weight: 400;
+      font-display: block;
+      src: url(data:font/woff2;base64,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) format('woff2');
+    }
+    @font-face {
+      font-family: 'PixelFont';
+      font-style: normal;
+      font-weight: 700;
+      font-display: block;
+      src: url(data:font/woff2;base64,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) format('woff2');
+    }
+    @font-face {
+      font-family: 'PixelSans';
+      font-style: normal;
+      font-weight: 400 700;
+      font-display: block;
+      src: url(data:font/woff2;base64,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) format('woff2');
+    }
+
+    /* =========================================================================
+       MINECRAFT — ORE UI DESIGN SYSTEM TOKENS
+       ========================================================================= */
+    :root {
+      --mc-font: 'PixelFont', 'PixelSans', monospace;
+      --ore-black: #111214;
+      --ore-bg-deep: #1E1E1F;
+      --ore-panel: #313233;
+      --ore-panel-light: #48494A;
+      --ore-panel-highlight: #5E5F60;
+      --ore-panel-shadow: #1D1E1F;
+
+      --ore-slot-bg: #242526;
+      --ore-slot-shadow: #141516;
+      --ore-slot-highlight: #3E3F40;
+
+      /* Classic Stone Button (Light Ore UI Button) */
+      --ore-stone-face: #D0D1D4;
+      --ore-stone-hover: #E2E3E6;
+      --ore-stone-top: #FFFFFF;
+      --ore-stone-lip: #58585A;
+      --ore-stone-text: #1E1E1F;
+
+      /* Dark Stone Button */
+      --ore-darkbtn-face: #48494A;
+      --ore-darkbtn-hover: #5A5B5C;
+      --ore-darkbtn-top: #6D6E70;
+      --ore-darkbtn-lip: #262728;
+
+      /* Emerald Green Primary Button (Minecraft "Play / Create" Button) */
+      --ore-green-face: #3C8527;
+      --ore-green-hover: #4CA432;
+      --ore-green-top: #63B849;
+      --ore-green-lip: #1D4D13;
+
+      /* Diamond Blue Button */
+      --ore-blue-face: #2868B8;
+      --ore-blue-hover: #357CD4;
+      --ore-blue-top: #5BA0F2;
+      --ore-blue-lip: #153B6E;
+
+      /* Redstone Danger Button */
+      --ore-red-face: #B82828;
+      --ore-red-hover: #D13434;
+      --ore-red-top: #F06262;
+      --ore-red-lip: #631313;
+
+      /* Gold / Amber Accent */
+      --ore-gold: #FFAA00;
+      --ore-diamond: #55FFFF;
+      --ore-emerald: #55FF55;
+      --ore-amethyst: #AA55FF;
+
+      --ore-text: #FFFFFF;
+      --ore-text-dim: #BCBEC0;
+    }
+
+    * {
+      box-sizing: border-box;
+      image-rendering: pixelated;
+      font-family: var(--mc-font);
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: var(--ore-bg-deep);
+      /* Subtle Minecraft Deepslate checkerboard pattern */
+      background-image:
+        linear-gradient(45deg, #191A1B 25%, transparent 25%),
+        linear-gradient(-45deg, #191A1B 25%, transparent 25%),
+        linear-gradient(45deg, transparent 75%, #191A1B 75%),
+        linear-gradient(-45deg, transparent 75%, #191A1B 75%);
+      background-size: 16px 16px;
+      background-position: 0 0, 0 8px, 8px -8px, -8px 0;
+      color: var(--ore-text);
+      font-family: var(--mc-font);
+      user-select: none;
+      -webkit-font-smoothing: none;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* =========================================================================
+       ORE UI TOP HEADER BAR
+       ========================================================================= */
+    .ore-topbar {
+      background: #E6E8EB;
+      color: #1E1E1F;
+      border-bottom: 4px solid #1E1E1F;
+      box-shadow: inset 0 -4px 0 #B2B4B8, inset 0 2px 0 #FFFFFF;
+      padding: 10px 20px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .brand-cluster {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    /* Pixel-art Emerald Block Icon */
+    .mc-block-icon {
+      width: 28px;
+      height: 28px;
+      background: #3C8527;
+      border: 2px solid #111214;
+      box-shadow:
+        inset 3px 3px 0 #63B849,
+        inset -3px -3px 0 #1D4D13,
+        inset 6px 6px 0 #55FF55;
+      display: inline-block;
+    }
+
+    .ore-title {
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      color: #1E1E1F;
+      text-shadow: 0 2px 0 rgba(255,255,255,0.7);
+      margin: 0;
+    }
+
+    .ore-tag {
+      font-size: 12px;
+      font-weight: 700;
+      padding: 3px 8px;
+      background: #313233;
+      color: #55FF55;
+      border: 2px solid #111214;
+      box-shadow: inset 0 2px 0 #1E1E1F;
+    }
+
+    .workspace {
+      max-width: 1320px;
+      margin: 0 auto;
+      padding: 16px 20px 24px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    /* =========================================================================
+       ORE UI 3D BEVELED PANELS & RECESSED SLOTS
+       ========================================================================= */
+    .ore-panel {
+      background: var(--ore-panel);
+      border: 2px solid var(--ore-black);
+      box-shadow:
+        inset 0 2px 0 var(--ore-panel-highlight),
+        inset 2px 0 0 var(--ore-panel-highlight),
+        inset 0 -3px 0 var(--ore-panel-shadow),
+        inset -2px 0 0 var(--ore-panel-shadow),
+        0 4px 0 rgba(0,0,0,0.45);
+      padding: 14px;
+    }
+
+    .ore-panel-header {
+      background: var(--ore-panel-light);
+      border: 2px solid var(--ore-black);
+      box-shadow:
+        inset 0 2px 0 #6D6E70,
+        inset 0 -2px 0 #2A2B2C;
+      padding: 8px 12px;
+      margin-bottom: 10px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .ore-section-title {
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      color: #FFFFFF;
+      text-shadow: 2px 2px 0 #111214;
+    }
+
+    .ore-slot {
+      background: var(--ore-slot-bg);
+      border: 2px solid var(--ore-black);
+      box-shadow:
+        inset 0 3px 0 var(--ore-slot-shadow),
+        inset 3px 0 0 var(--ore-slot-shadow),
+        inset 0 -2px 0 var(--ore-slot-highlight),
+        inset -2px 0 0 var(--ore-slot-highlight);
+    }
+
+    /* =========================================================================
+       SNAP & ALIGNMENT CONTROL BAR (MINECRAFT TOGGLES)
+       ========================================================================= */
+    .snap-toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      padding: 8px 10px;
+      margin-bottom: 10px;
+      font-size: 12px;
+    }
+
+    .snap-controls-left {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .mc-check-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      color: #FFFFFF;
+      font-size: 12px;
+      font-weight: 700;
+      margin: 0;
+      padding: 4px 8px;
+      background: #313233;
+      border: 2px solid #000;
+      box-shadow: inset 0 2px 0 #48494A, inset 0 -2px 0 #1D1E1F;
+    }
+    .mc-check-label input[type="checkbox"] {
+      width: 14px;
+      height: 14px;
+      margin: 0;
+      accent-color: #3C8527;
+      cursor: pointer;
+    }
+
+    /* =========================================================================
+       ORE UI 3D PUSH BUTTONS (WITH PHYSICAL BOTTOM BEVEL LIP)
+       ========================================================================= */
+    .btn-group {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+    }
+
+    button {
+      font-family: var(--mc-font);
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+      padding: 8px 12px 11px 12px;
+      border: 2px solid var(--ore-black);
+      border-radius: 0;
+      cursor: pointer;
+      position: relative;
+      transition: transform 0.04s steps(1), background-color 0.08s steps(1);
+      /* Default: Ore UI Light Stone Button */
+      background-color: var(--ore-stone-face);
+      color: var(--ore-stone-text);
+      box-shadow:
+        inset 0 2px 0 var(--ore-stone-top),
+        inset 2px 0 0 rgba(255,255,255,0.65),
+        inset -2px 0 0 rgba(0,0,0,0.18),
+        inset 0 -4px 0 var(--ore-stone-lip);
+    }
+
+    button:hover {
+      background-color: var(--ore-stone-hover);
+    }
+
+    button:active {
+      transform: translateY(2px);
+      padding: 9px 12px 10px 12px;
+      box-shadow:
+        inset 0 2px 0 rgba(0,0,0,0.35),
+        inset 0 -2px 0 var(--ore-stone-lip);
+    }
+
+    /* Dark Stone Button Variant */
+    .btn-dark {
+      background-color: var(--ore-darkbtn-face);
+      color: #FFFFFF;
+      text-shadow: 1px 1px 0 #111214;
+      box-shadow:
+        inset 0 2px 0 var(--ore-darkbtn-top),
+        inset 2px 0 0 rgba(255,255,255,0.2),
+        inset -2px 0 0 rgba(0,0,0,0.3),
+        inset 0 -4px 0 var(--ore-darkbtn-lip);
+    }
+    .btn-dark:hover { background-color: var(--ore-darkbtn-hover); }
+
+    /* Emerald Green Button Variant (Primary) */
+    .btn-emerald {
+      background-color: var(--ore-green-face);
+      color: #FFFFFF;
+      text-shadow: 1px 2px 0 #14360D;
+      box-shadow:
+        inset 0 2px 0 var(--ore-green-top),
+        inset 2px 0 0 rgba(255,255,255,0.25),
+        inset -2px 0 0 rgba(0,0,0,0.25),
+        inset 0 -4px 0 var(--ore-green-lip);
+    }
+    .btn-emerald:hover { background-color: var(--ore-green-hover); }
+
+    /* Diamond Blue Button Variant */
+    .btn-diamond {
+      background-color: var(--ore-blue-face);
+      color: #FFFFFF;
+      text-shadow: 1px 2px 0 #0F294D;
+      box-shadow:
+        inset 0 2px 0 var(--ore-blue-top),
+        inset 2px 0 0 rgba(255,255,255,0.25),
+        inset -2px 0 0 rgba(0,0,0,0.25),
+        inset 0 -4px 0 var(--ore-blue-lip);
+    }
+    .btn-diamond:hover { background-color: var(--ore-blue-hover); }
+
+    /* Redstone Danger Button Variant */
+    .btn-redstone {
+      background-color: var(--ore-red-face);
+      color: #FFFFFF;
+      text-shadow: 1px 2px 0 #450A0A;
+      box-shadow:
+        inset 0 2px 0 var(--ore-red-top),
+        inset 2px 0 0 rgba(255,255,255,0.25),
+        inset -2px 0 0 rgba(0,0,0,0.25),
+        inset 0 -4px 0 var(--ore-red-lip);
+    }
+    .btn-redstone:hover { background-color: var(--ore-red-hover); }
+
+    .btn-sm {
+      padding: 5px 8px 8px 8px;
+      font-size: 12px;
+    }
+    .btn-sm:active {
+      padding: 6px 8px 7px 8px;
+    }
+
+    /* =========================================================================
+       LAYOUT GRID & INPUT CONTROLS
+       ========================================================================= */
+    .main-grid {
+      display: grid;
+      grid-template-columns: 7fr 5fr;
+      gap: 16px;
+    }
+    @media (max-width: 960px) {
+      .main-grid { grid-template-columns: 1fr; }
+    }
+
+    .canvas-wrap {
+      width: 100%;
+      max-width: 530px;
+      aspect-ratio: 1 / 1;
+      margin: 0 auto;
+      padding: 4px;
+    }
+    canvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+      cursor: crosshair;
+    }
+
+    .legend-bar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-top: 10px;
+      padding: 8px 10px;
+      font-size: 12px;
+      color: var(--ore-text-dim);
+    }
+    .legend-items { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+    .legend-item { display: flex; align-items: center; gap: 5px; font-weight: 700; }
+    .block-swatch {
+      width: 12px;
+      height: 12px;
+      border: 2px solid #000;
+      display: inline-block;
+    }
+
+    .wp-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      max-height: 430px;
+      overflow-y: auto;
+      padding: 8px;
+    }
+
+    .wp-card {
+      padding: 10px;
+      background: #3A3B3C;
+      border: 2px solid var(--ore-black);
+      box-shadow:
+        inset 0 2px 0 #525354,
+        inset 0 -3px 0 #222324;
+      cursor: pointer;
+    }
+    .wp-card.selected {
+      background: #46483C;
+      border-color: var(--ore-emerald);
+      box-shadow:
+        inset 0 2px 0 #63854C,
+        inset 0 -3px 0 #24301E,
+        0 0 0 1px var(--ore-emerald);
+    }
+
+    .wp-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 8px;
+    }
+    .wp-num {
+      width: 24px;
+      height: 24px;
+      border: 2px solid #000;
+      color: #111214;
+      font-size: 12px;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: inset 0 2px 0 rgba(255,255,255,0.45);
+    }
+
+    .row-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 8px; }
+    .row-action { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 8px; align-items: end; }
+
+    label {
+      display: block;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--ore-text-dim);
+      text-shadow: 1px 1px 0 #111214;
+      margin-bottom: 4px;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 6px 8px;
+      border-radius: 0;
+      border: 2px solid var(--ore-black);
+      background: #18191A;
+      color: #FFFFFF;
+      font-size: 12px;
+      font-weight: 700;
+      font-family: var(--mc-font);
+      box-shadow:
+        inset 0 2px 0 #0D0E0F,
+        inset 0 -1px 0 #38393A;
+      outline: none;
+    }
+    input:focus, select:focus {
+      border-color: var(--ore-emerald);
+    }
+    input:disabled { opacity: 0.4; }
+
+    .settings-footer {
+      margin-top: 12px;
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+    .settings-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+
+    .code-box {
+      padding: 12px;
+      color: #55FF55;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 12px;
+      overflow-x: auto;
+      max-height: 220px;
+      user-select: all;
+      margin: 0;
+    }
+
+    /* Minecraft Achievement / Toast Banner */
+    .mc-toast {
+      font-size: 12px;
+      font-weight: 700;
+      color: #FFFF55;
+      background: #242526;
+      border: 2px solid #000;
+      box-shadow: inset 0 2px 0 #48494A, inset 0 -2px 0 #141516;
+      padding: 4px 10px;
+      display: none;
+    }
+    .mc-toast.show { display: inline-block; }
+
+    /* Custom Blocky Scrollbar */
+    ::-webkit-scrollbar { width: 10px; height: 10px; }
+    ::-webkit-scrollbar-track { background: #18191A; border: 2px solid #000; }
+    ::-webkit-scrollbar-thumb {
+      background: #5A5B5C;
+      border: 2px solid #000;
+      box-shadow: inset 0 2px 0 #828385;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ORE UI TOP HEADER BAR -->
+  <div class="ore-topbar">
+    <div class="brand-cluster">
+      <span class="mc-block-icon"></span>
+      <div>
+        <h1 class="ore-title">AutoPathingFTC</h1>
+      </div>
+      <span class="ore-tag">PINPOINT ODOMETRY</span>
+      <span id="statusToast" class="mc-toast"></span>
+    </div>
+
+    <div class="btn-group">
+      <button id="btnSim" onclick="toggleSimulation()">▶ Simulate</button>
+      <button onclick="copyJavaCode()">📋 Copy Code</button>
+      <button class="btn-diamond" onclick="sendToAndroidStudio()">⚡ Send to TeamCode</button>
+      <button class="btn-emerald" onclick="downloadJavaFile()">⬇ Save .java File</button>
+    </div>
+  </div>
+
+  <!-- MAIN WORKSPACE -->
+  <div class="workspace">
+
+    <div class="main-grid">
+
+      <!-- LEFT PANEL: CHUNK MAP CANVAS -->
+      <div class="ore-panel">
+        <div class="ore-panel-header">
+          <span class="ore-section-title">🗺️ FTC Field Map (Origin 0,0,0°)</span>
+          <div class="btn-group">
+            <button class="btn-sm btn-dark" onclick="loadPreset('baseline')">Baseline</button>
+            <button class="btn-sm btn-dark" onclick="loadPreset('square')">24" Box</button>
+            <button class="btn-sm btn-dark" onclick="loadPreset('zigzag')">S-Curve</button>
+            <button class="btn-sm btn-dark" onclick="loadPreset('outback')">Out &amp; Back</button>
+            <button class="btn-sm btn-redstone" onclick="clearWaypoints()">Clear</button>
+          </div>
+        </div>
+
+        <!-- SNAP & STRAIGHT-LINE ALIGNMENT BAR -->
+        <div class="ore-slot snap-toolbar">
+          <div class="snap-controls-left">
+            <label class="mc-check-label" title="Snap dots onto fixed grid points on the field">
+              <input type="checkbox" id="chkGridSnap" checked onchange="drawField()" />
+              <span>🧲 Snap Points</span>
+            </label>
+
+            <select id="selGridStep" onchange="drawField()" style="width:142px; padding:4px 6px;">
+              <option value="6" selected>6" Grid Points</option>
+              <option value="3">3" Grid Points</option>
+              <option value="12">12" Tile Points</option>
+              <option value="1">1" Fine Points</option>
+            </select>
+
+            <label class="mc-check-label" title="Magnetically lock X or Y to previous/next dot for 100% straight lines">
+              <input type="checkbox" id="chkLineSnap" checked onchange="drawField()" />
+              <span>📏 Straight-Line Lock</span>
+            </label>
+          </div>
+
+          <button class="btn-sm btn-emerald" onclick="snapAllWaypointsToGrid()" title="Snap all existing dots onto the current grid points">
+            ⚡ Align All Dots
+          </button>
+        </div>
+
+        <div class="ore-slot canvas-wrap">
+          <canvas id="fieldCanvas" width="540" height="540"></canvas>
+        </div>
+
+        <div class="ore-slot legend-bar">
+          <div class="legend-items">
+            <span class="legend-item"><span class="block-swatch" style="background:#55FF55;"></span>Spawn (0,0)</span>
+            <span class="legend-item"><span class="block-swatch" style="background:#55FFFF;"></span>Stop</span>
+            <span class="legend-item"><span class="block-swatch" style="background:#FFAA00;"></span>Pass</span>
+            <span class="legend-item"><span class="block-swatch" style="background:#AA55FF;"></span>Hold</span>
+          </div>
+          <div id="cursorReadout" style="color:#FFFF55; font-weight:700;">X=0.0", Y=0.0"</div>
+        </div>
+      </div>
+
+      <!-- RIGHT PANEL: WAYPOINT INVENTORY / INSPECTOR -->
+      <div class="ore-panel" style="display:flex; flex-direction:column; justify-content:space-between;">
+        <div>
+          <div class="ore-panel-header">
+            <span class="ore-section-title">⛏️ Waypoints &amp; Block Actions</span>
+            <button class="btn-sm btn-emerald" onclick="addDefaultWaypoint()">+ Add Dot</button>
+          </div>
+
+          <div id="waypointList" class="ore-slot wp-list"></div>
+        </div>
+
+        <div class="ore-slot settings-footer">
+          <div class="settings-row">
+            <span>OpMode Class Name:</span>
+            <input id="classNameInput" type="text" value="AutoPathOpMode" oninput="refreshOutput()" style="width:190px; color:#55FF55;" />
+          </div>
+          <div class="settings-row">
+            <span>OpMode Mode:</span>
+            <select id="opModeType" onchange="refreshOutput()" style="width:235px;">
+              <option value="TeleOp">@TeleOp (Gamepad + Replay)</option>
+              <option value="Autonomous">@Autonomous (Competition)</option>
+            </select>
+          </div>
+          <div class="settings-row">
+            <span>Total Path Distance:</span>
+            <span id="totalDistReadout" style="color:#55FFFF; font-weight:700;">0.0 in</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- BOTTOM PANEL: COMMAND BLOCK JAVA OUTPUT -->
+    <div class="ore-panel">
+      <div class="ore-panel-header">
+        <span class="ore-section-title">⚡ Command Block Output (<span id="fileNameLabel" style="color:#55FF55;">AutoPathOpMode.java</span>)</span>
+        <span style="font-size:12px; color:var(--ore-text-dim); font-weight:700;">
+          TeamCode/src/main/java/org/firstinspires/ftc/teamcode/
+        </span>
+      </div>
+      <pre id="codePreview" class="ore-slot code-box"></pre>
+    </div>
+
+  </div>
+
+  <script>
+    const FIELD_HALF_INCHES = 48;
+    const LINE_SNAP_THRESHOLD_IN = 3.0; // Magnetically lock to straight line within 3.0 inches
+    const canvas = document.getElementById('fieldCanvas');
+    const ctx = canvas.getContext('2d');
+
+    // Starts with the verified locked baseline 4-dot path
+    let waypoints = [
+      { x: 24.0, y: 0.0,  heading: 90.0,  action: 'STOP_AND_WAIT', waitSec: 0.5, speed: 0.50, label: 'Dot 1' },
+      { x: 24.0, y: 24.0, heading: 180.0, action: 'STOP_AND_WAIT', waitSec: 0.5, speed: 0.50, label: 'Dot 2' },
+      { x: 0.0,  y: 24.0, heading: -90.0, action: 'STOP_AND_WAIT', waitSec: 0.5, speed: 0.50, label: 'Dot 3' },
+      { x: 0.0,  y: 0.0,  heading: 0.0,   action: 'STOP_AND_HOLD', waitSec: 0.0, speed: 0.50, label: 'Dot 4' }
+    ];
+
+    let selectedIndex = 0;
+    let draggingIndex = -1;
+    let hoverSnapCoord = null; // Shows the magnetic snap reticule on hover
+    let activeSnapGuides = []; // Stores active straight-line laser guides { type: 'X'|'Y', value: number, refLabel: string }
+
+    let simRunning = false;
+    let simAnimId = null;
+    let simRobot = { x: 0, y: 0, heading: 0, targetIdx: 0, waitTimer: 0 };
+    let lastSimTimestamp = 0;
+
+    function showToast(msg) {
+      const el = document.getElementById('statusToast');
+      el.textContent = msg;
+      el.classList.add('show');
+      setTimeout(() => el.classList.remove('show'), 3200);
+    }
+
+    function getCleanClassName() {
+      let raw = (document.getElementById('classNameInput').value || 'AutoPathOpMode').trim();
+      raw = raw.replace(/[^a-zA-Z0-9_]/g, '');
+      if (!raw) raw = 'AutoPathOpMode';
+      // Java identifiers cannot start with a digit
+      if (/^[0-9]/.test(raw)) raw = 'Path' + raw;
+      return raw;
+    }
+
+    function fieldToCanvas(xIn, yIn) {
+      const cx = canvas.width / 2;
+      const cy = canvas.height / 2;
+      const scale = (canvas.width / 2) / FIELD_HALF_INCHES;
+      const px = cx - yIn * scale;
+      const py = cy - xIn * scale;
+      return { px, py };
+    }
+
+    function canvasToFieldRaw(px, py) {
+      const cx = canvas.width / 2;
+      const cy = canvas.height / 2;
+      const scale = (canvas.width / 2) / FIELD_HALF_INCHES;
+      const yIn = -(px - cx) / scale;
+      const xIn = -(py - cy) / scale;
+      return {
+        x: Math.max(-FIELD_HALF_INCHES, Math.min(FIELD_HALF_INCHES, xIn)),
+        y: Math.max(-FIELD_HALF_INCHES, Math.min(FIELD_HALF_INCHES, yIn))
+      };
+    }
+
+    // Computes snapped field coordinates + active straight-line guides
+    function computeSnappedCoord(rawX, rawY, wpIdx, shiftKey) {
+      const gridSnapOn = document.getElementById('chkGridSnap').checked;
+      const lineSnapOn = document.getElementById('chkLineSnap').checked;
+      const gridStep = parseFloat(document.getElementById('selGridStep').value) || 6.0;
+
+      let x = rawX;
+      let y = rawY;
+      const guides = [];
+
+      // 1. Snap to grid point intervals first if enabled
+      if (gridSnapOn) {
+        x = Math.round(x / gridStep) * gridStep;
+        y = Math.round(y / gridStep) * gridStep;
+      } else {
+        x = Math.round(x * 2) / 2;
+        y = Math.round(y * 2) / 2;
+      }
+
+      // 2. Collect reference points for straight-line alignment (Origin, Previous Dot, Next Dot)
+      const refs = [{ x: 0.0, y: 0.0, name: 'Origin (0,0)' }];
+      if (wpIdx > 0 && waypoints[wpIdx - 1]) {
+        refs.push({ x: waypoints[wpIdx - 1].x, y: waypoints[wpIdx - 1].y, name: `Dot ${wpIdx}` });
+      } else if (wpIdx === -1 && waypoints.length > 0) {
+        const lastIdx = waypoints.length - 1;
+        refs.push({ x: waypoints[lastIdx].x, y: waypoints[lastIdx].y, name: `Dot ${lastIdx + 1}` });
+      }
+      if (wpIdx >= 0 && wpIdx + 1 < waypoints.length && waypoints[wpIdx + 1]) {
+        refs.push({ x: waypoints[wpIdx + 1].x, y: waypoints[wpIdx + 1].y, name: `Dot ${wpIdx + 2}` });
+      }
+
+      // If Shift is held, strictly lock to horizontal or vertical from the immediate predecessor
+      if (shiftKey && refs.length > 1) {
+        const prevRef = refs[1];
+        if (Math.abs(rawX - prevRef.x) < Math.abs(rawY - prevRef.y)) {
+          x = prevRef.x;
+          guides.push({ axis: 'X', value: x, refX: prevRef.x, refY: prevRef.y, label: `LINE X=${x.toFixed(1)}"` });
+        } else {
+          y = prevRef.y;
+          guides.push({ axis: 'Y', value: y, refX: prevRef.x, refY: prevRef.y, label: `LINE Y=${y.toFixed(1)}"` });
+        }
+      } else if (lineSnapOn) {
+        // Magnetic straight-line lock when near any reference X or Y
+        let bestDx = LINE_SNAP_THRESHOLD_IN + 0.01;
+        let matchedRefX = null;
+        for (const r of refs) {
+          const dx = Math.abs(rawX - r.x);
+          if (dx <= LINE_SNAP_THRESHOLD_IN && dx < bestDx) {
+            bestDx = dx;
+            matchedRefX = r;
+          }
+        }
+        if (matchedRefX) {
+          x = matchedRefX.x;
+          guides.push({ axis: 'X', value: x, refX: matchedRefX.x, refY: matchedRefX.y, label: `STRAIGHT X=${x.toFixed(1)}"` });
+        }
+
+        let bestDy = LINE_SNAP_THRESHOLD_IN + 0.01;
+        let matchedRefY = null;
+        for (const r of refs) {
+          const dy = Math.abs(rawY - r.y);
+          if (dy <= LINE_SNAP_THRESHOLD_IN && dy < bestDy) {
+            bestDy = dy;
+            matchedRefY = r;
+          }
+        }
+        if (matchedRefY) {
+          y = matchedRefY.y;
+          guides.push({ axis: 'Y', value: y, refX: matchedRefY.x, refY: matchedRefY.y, label: `STRAIGHT Y=${y.toFixed(1)}"` });
+        }
+      }
+
+      x = Math.max(-FIELD_HALF_INCHES, Math.min(FIELD_HALF_INCHES, x));
+      y = Math.max(-FIELD_HALF_INCHES, Math.min(FIELD_HALF_INCHES, y));
+      return { x, y, guides };
+    }
+
+    function snapAllWaypointsToGrid() {
+      const gridStep = parseFloat(document.getElementById('selGridStep').value) || 6.0;
+      waypoints.forEach(wp => {
+        wp.x = Math.round(wp.x / gridStep) * gridStep;
+        wp.y = Math.round(wp.y / gridStep) * gridStep;
+      });
+      refreshAll();
+      showToast(`★ ALL DOTS SNAPPED TO ${gridStep}" POINTS!`);
+    }
+
+    // Helper to draw a Minecraft beveled square block on canvas
+    function drawMinecraftBlock(x, y, size, faceColor, topLight, bottomShade, isSelected) {
+      const half = size / 2;
+      if (isSelected) {
+        ctx.fillStyle = '#FFFF55';
+        ctx.fillRect(x - half - 4, y - half - 4, size + 8, size + 8);
+      }
+      // Outer black border
+      ctx.fillStyle = '#000000';
+      ctx.fillRect(x - half - 2, y - half - 2, size + 4, size + 4);
+      // Main block face
+      ctx.fillStyle = faceColor;
+      ctx.fillRect(x - half, y - half, size, size);
+      // Top/Left pixel bevel highlight
+      ctx.fillStyle = topLight;
+      ctx.fillRect(x - half, y - half, size, 3);
+      ctx.fillRect(x - half, y - half, 3, size);
+      // Bottom/Right pixel bevel shadow
+      ctx.fillStyle = bottomShade;
+      ctx.fillRect(x - half, y + half - 3, size, 3);
+      ctx.fillRect(x + half - 3, y - half, 3, size);
+    }
+
+    function drawField() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      const scale = (canvas.width / 2) / FIELD_HALF_INCHES;
+      const cx = canvas.width / 2;
+      const cy = canvas.height / 2;
+
+      // Checkerboard Minecraft Deepslate Tiles (12" tiles)
+      const tilePx = 12 * scale;
+      for (let r = -4; r < 4; r++) {
+        for (let c = -4; c < 4; c++) {
+          const isEven = ((r + c) & 1) === 0;
+          ctx.fillStyle = isEven ? '#1B1C1E' : '#202224';
+          ctx.fillRect(cx + c * tilePx, cy + r * tilePx, tilePx, tilePx);
+        }
+      }
+
+      // Grid lines every 6 inches
+      ctx.lineWidth = 1;
+      for (let inch = -FIELD_HALF_INCHES; inch <= FIELD_HALF_INCHES; inch += 6) {
+        const offset = inch * scale;
+        const isMajor = (inch % 12 === 0);
+        ctx.strokeStyle = isMajor ? '#383A3D' : '#26282A';
+
+        ctx.beginPath();
+        ctx.moveTo(cx + offset, 0);
+        ctx.lineTo(cx + offset, canvas.height);
+        ctx.stroke();
+
+        ctx.beginPath();
+        ctx.moveTo(0, cy + offset);
+        ctx.lineTo(canvas.width, cy + offset);
+        ctx.stroke();
+      }
+
+      // Draw Visible Snap Grid Point Pegs when Grid Snap is active
+      const gridSnapOn = document.getElementById('chkGridSnap').checked;
+      const gridStep = parseFloat(document.getElementById('selGridStep').value) || 6.0;
+      if (gridSnapOn) {
+        const pegStep = Math.max(3, gridStep);
+        for (let gx = -FIELD_HALF_INCHES; gx <= FIELD_HALF_INCHES; gx += pegStep) {
+          for (let gy = -FIELD_HALF_INCHES; gy <= FIELD_HALF_INCHES; gy += pegStep) {
+            const pt = fieldToCanvas(gx, gy);
+            const isTileCorner = (gx % 12 === 0 && gy % 12 === 0);
+            ctx.fillStyle = isTileCorner ? '#5E6268' : '#3E4145';
+            const s = isTileCorner ? 3 : 2;
+            ctx.fillRect(Math.round(pt.px - s / 2), Math.round(pt.py - s / 2), s, s);
+          }
+        }
+      }
+
+      // Main Chunk Axes (+X Forward, +Y Left)
+      ctx.strokeStyle = '#686A6E';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(cx, 0); ctx.lineTo(cx, canvas.height);
+      ctx.moveTo(0, cy); ctx.lineTo(canvas.width, cy);
+      ctx.stroke();
+
+      // Axis Labels
+      ctx.fillStyle = '#BCBEC0';
+      ctx.font = '700 12px "PixelFont", monospace';
+      ctx.fillText('+X FWD (+48")', cx + 8, 16);
+      ctx.fillText('-X BACK (-48")', cx + 8, canvas.height - 8);
+      ctx.fillText('+Y LEFT', 8, cy - 6);
+      ctx.fillText('-Y RIGHT', canvas.width - 82, cy - 6);
+
+      // Draw Active Straight-Line Alignment Laser Guides
+      if (activeSnapGuides.length > 0) {
+        ctx.save();
+        ctx.strokeStyle = '#55FF55';
+        ctx.lineWidth = 2;
+        ctx.setLineDash([6, 4]);
+        activeSnapGuides.forEach((g, idx) => {
+          const pt = fieldToCanvas(g.axis === 'X' ? g.value : 0, g.axis === 'Y' ? g.value : 0);
+          ctx.beginPath();
+          if (g.axis === 'X') {
+            // Constant X = Horizontal line across the canvas
+            ctx.moveTo(0, pt.py);
+            ctx.lineTo(canvas.width, pt.py);
+          } else {
+            // Constant Y = Vertical line down the canvas
+            ctx.moveTo(pt.px, 0);
+            ctx.lineTo(pt.px, canvas.height);
+          }
+          ctx.stroke();
+
+          // Draw Straight-Line Lock Badge
+          ctx.fillStyle = '#111214';
+          ctx.fillRect(10, 10 + idx * 24, 175, 20);
+          ctx.strokeStyle = '#55FF55';
+          ctx.setLineDash([]);
+          ctx.strokeRect(10, 10 + idx * 24, 175, 20);
+          ctx.fillStyle = '#55FF55';
+          ctx.font = '700 12px "PixelFont", monospace';
+          ctx.fillText('📏 ' + g.label, 16, 24 + idx * 24);
+          ctx.setLineDash([6, 4]);
+        });
+        ctx.restore();
+      }
+
+      // Draw Magnetic Target Reticule on Hovered Snap Point
+      if (hoverSnapCoord) {
+        const hPt = fieldToCanvas(hoverSnapCoord.x, hoverSnapCoord.y);
+        ctx.save();
+        ctx.strokeStyle = '#FFFF55';
+        ctx.lineWidth = 2;
+        ctx.strokeRect(Math.round(hPt.px - 9), Math.round(hPt.py - 9), 18, 18);
+        ctx.fillStyle = '#55FF55';
+        ctx.fillRect(Math.round(hPt.px - 2), Math.round(hPt.py - 2), 4, 4);
+        ctx.restore();
+      }
+
+      // Draw Path Lines between blocks
+      let prevPt = { x: 0, y: 0 };
+      waypoints.forEach((wp) => {
+        const p1 = fieldToCanvas(prevPt.x, prevPt.y);
+        const p2 = fieldToCanvas(wp.x, wp.y);
+
+        const isStraightSegment = (Math.abs(wp.x - prevPt.x) < 0.01 || Math.abs(wp.y - prevPt.y) < 0.01);
+
+        // Black outline under path line
+        ctx.strokeStyle = '#000000';
+        ctx.lineWidth = 6;
+        ctx.beginPath();
+        ctx.moveTo(p1.px, p1.py);
+        ctx.lineTo(p2.px, p2.py);
+        ctx.stroke();
+
+        // Colored path beam
+        ctx.strokeStyle = wp.action === 'PASS_THROUGH' ? '#FFAA00' : (isStraightSegment ? '#55FFFF' : '#38B8E8');
+        ctx.lineWidth = 3;
+        if (wp.action === 'PASS_THROUGH') {
+          ctx.setLineDash([8, 6]);
+        } else {
+          ctx.setLineDash([]);
+        }
+        ctx.beginPath();
+        ctx.moveTo(p1.px, p1.py);
+        ctx.lineTo(p2.px, p2.py);
+        ctx.stroke();
+        ctx.setLineDash([]);
+
+        // Midpoint Arrow
+        const midX = (p1.px + p2.px) / 2;
+        const midY = (p1.py + p2.py) / 2;
+        const segLen = Math.hypot(wp.x - prevPt.x, wp.y - prevPt.y);
+        if (segLen > 3) {
+          const angle = Math.atan2(p2.py - p1.py, p2.px - p1.px);
+          ctx.save();
+          ctx.translate(midX, midY);
+          ctx.rotate(angle);
+          ctx.fillStyle = '#FFFF55';
+          ctx.strokeStyle = '#000000';
+          ctx.lineWidth = 2;
+          ctx.beginPath();
+          ctx.moveTo(7, 0);
+          ctx.lineTo(-5, -5);
+          ctx.lineTo(-5, 5);
+          ctx.closePath();
+          ctx.fill();
+          ctx.stroke();
+          ctx.restore();
+        }
+        prevPt = wp;
+      });
+
+      // Draw Spawn Origin Block (0, 0, 0°) — Emerald Block
+      const originCanvas = fieldToCanvas(0, 0);
+      drawMinecraftBlock(originCanvas.px, originCanvas.py, 14, '#3C8527', '#55FF55', '#1D4D13', false);
+
+      // Draw Waypoint Blocks & Heading Torch Vectors
+      waypoints.forEach((wp, idx) => {
+        const pt = fieldToCanvas(wp.x, wp.y);
+        const isSelected = (idx === selectedIndex);
+
+        const rad = (wp.heading * Math.PI) / 180.0;
+        const dirPx = -Math.sin(rad);
+        const dirPy = -Math.cos(rad);
+
+        // Heading vector bar
+        ctx.strokeStyle = '#000000';
+        ctx.lineWidth = 5;
+        ctx.beginPath();
+        ctx.moveTo(pt.px, pt.py);
+        ctx.lineTo(pt.px + dirPx * 24, pt.py + dirPy * 24);
+        ctx.stroke();
+
+        ctx.strokeStyle = isSelected ? '#FFFF55' : '#FFFFFF';
+        ctx.lineWidth = 2.5;
+        ctx.beginPath();
+        ctx.moveTo(pt.px, pt.py);
+        ctx.lineTo(pt.px + dirPx * 24, pt.py + dirPy * 24);
+        ctx.stroke();
+
+        // Block Colors by Action
+        let face = '#28A8B8', light = '#55FFFF', shade = '#145661'; // STOP_AND_WAIT (Diamond)
+        if (wp.action === 'PASS_THROUGH') {
+          face = '#D98200'; light = '#FFAA00'; shade = '#784500';   // PASS_THROUGH (Gold)
+        } else if (wp.action === 'STOP_AND_HOLD') {
+          face = '#8232C8'; light = '#AA55FF'; shade = '#43146E';   // STOP_AND_HOLD (Amethyst)
+        }
+
+        drawMinecraftBlock(pt.px, pt.py, 22, face, light, shade, isSelected);
+
+        // Block Number
+        ctx.fillStyle = '#FFFFFF';
+        ctx.font = '700 12px "PixelFont", monospace';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(String(idx + 1), pt.px, pt.py);
+      });
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'alphabetic';
+
+      // Draw Simulated Robot (Blocky Minecart / Iron Golem Chassis)
+      if (simRunning) {
+        const rPt = fieldToCanvas(simRobot.x, simRobot.y);
+        const rSize = 14 * scale;
+        ctx.save();
+        ctx.translate(rPt.px, rPt.py);
+        ctx.rotate(-(simRobot.heading * Math.PI) / 180.0);
+
+        ctx.fillStyle = 'rgba(85, 255, 85, 0.28)';
+        ctx.strokeStyle = '#55FF55';
+        ctx.lineWidth = 3;
+        ctx.fillRect(-rSize / 2, -rSize / 2, rSize, rSize);
+        ctx.strokeRect(-rSize / 2, -rSize / 2, rSize, rSize);
+
+        // Front directional beacon
+        ctx.fillStyle = '#FFFF55';
+        ctx.fillRect(-5, -rSize / 2 - 5, 10, 6);
+        ctx.restore();
+      }
+    }
+
+    function getMouseCanvasPos(evt) {
+      const rect = canvas.getBoundingClientRect();
+      const scaleX = canvas.width / rect.width;
+      const scaleY = canvas.height / rect.height;
+      return {
+        px: (evt.clientX - rect.left) * scaleX,
+        py: (evt.clientY - rect.top) * scaleY
+      };
+    }
+
+    canvas.addEventListener('mousedown', (evt) => {
+      const { px, py } = getMouseCanvasPos(evt);
+      for (let i = waypoints.length - 1; i >= 0; i--) {
+        const pt = fieldToCanvas(waypoints[i].x, waypoints[i].y);
+        if (Math.hypot(px - pt.px, py - pt.py) <= 15) {
+          selectedIndex = i;
+          draggingIndex = i;
+          refreshAll();
+          return;
+        }
+      }
+
+      const raw = canvasToFieldRaw(px, py);
+      const snapped = computeSnappedCoord(raw.x, raw.y, -1, evt.shiftKey);
+      activeSnapGuides = snapped.guides;
+
+      const prevHeading = waypoints.length > 0 ? waypoints[waypoints.length - 1].heading : 0.0;
+      if (waypoints.length > 0 && waypoints[waypoints.length - 1].action === 'STOP_AND_HOLD') {
+        waypoints[waypoints.length - 1].action = 'STOP_AND_WAIT';
+        waypoints[waypoints.length - 1].waitSec = 0.5;
+      }
+      waypoints.push({
+        x: snapped.x,
+        y: snapped.y,
+        heading: prevHeading,
+        action: 'STOP_AND_HOLD',
+        waitSec: 0.0,
+        speed: 0.50,
+        label: `Dot ${waypoints.length + 1}`
+      });
+      selectedIndex = waypoints.length - 1;
+      draggingIndex = selectedIndex;
+      refreshAll();
+    });
+
+    canvas.addEventListener('mousemove', (evt) => {
+      const { px, py } = getMouseCanvasPos(evt);
+      const raw = canvasToFieldRaw(px, py);
+      const refIdx = draggingIndex !== -1 ? draggingIndex : -1;
+      const snapped = computeSnappedCoord(raw.x, raw.y, refIdx, evt.shiftKey);
+
+      hoverSnapCoord = { x: snapped.x, y: snapped.y };
+      activeSnapGuides = snapped.guides;
+
+      const lockTag = snapped.guides.length > 0 ? ' [LINE LOCK]' : '';
+      document.getElementById('cursorReadout').textContent =
+        `SNAP: X=${snapped.x.toFixed(1)}", Y=${snapped.y.toFixed(1)}"${lockTag}`;
+
+      if (draggingIndex !== -1) {
+        waypoints[draggingIndex].x = snapped.x;
+        waypoints[draggingIndex].y = snapped.y;
+        refreshAll();
+      } else {
+        drawField();
+      }
+    });
+
+    canvas.addEventListener('mouseleave', () => {
+      hoverSnapCoord = null;
+      activeSnapGuides = [];
+      drawField();
+    });
+
+    window.addEventListener('mouseup', () => {
+      if (draggingIndex !== -1) {
+        draggingIndex = -1;
+        activeSnapGuides = [];
+        drawField();
+      }
+    });
+
+    function renderWaypointList() {
+      const container = document.getElementById('waypointList');
+      if (waypoints.length === 0) {
+        container.innerHTML = `<div style="padding:16px; border:2px dashed #5A5B5C; text-align:center; font-size:12px; color:var(--ore-text-dim);">EMPTY INVENTORY — Click on the chunk map to place your first waypoint block!</div>`;
+        return;
+      }
+
+      container.innerHTML = waypoints.map((wp, idx) => {
+        const isSel = (idx === selectedIndex);
+        let badgeBg = '#55FFFF';
+        if (wp.action === 'PASS_THROUGH') badgeBg = '#FFAA00';
+        if (wp.action === 'STOP_AND_HOLD') badgeBg = '#AA55FF';
+
+        return `
+          <div onclick="selectWaypoint(${idx})" class="wp-card ${isSel ? 'selected' : ''}">
+            <div class="wp-top">
+              <div style="display:flex; align-items:center; gap:8px;">
+                <span class="wp-num" style="background:${badgeBg};">${idx + 1}</span>
+                <input type="text" value="${wp.label}" onchange="updateWp(${idx}, 'label', this.value)" style="width:140px;" />
+              </div>
+              <button class="btn-sm btn-redstone" onclick="event.stopPropagation(); deleteWaypoint(${idx})">✕ Remove</button>
+            </div>
+
+            <div class="row-3">
+              <div>
+                <label>X FWD (IN)</label>
+                <input type="number" step="0.5" value="${wp.x}" onchange="updateWp(${idx}, 'x', parseFloat(this.value)||0)" />
+              </div>
+              <div>
+                <label>Y LEFT (IN)</label>
+                <input type="number" step="0.5" value="${wp.y}" onchange="updateWp(${idx}, 'y', parseFloat(this.value)||0)" />
+              </div>
+              <div>
+                <label>HEADING (°)</label>
+                <input type="number" step="5" value="${wp.heading}" onchange="updateWp(${idx}, 'heading', parseFloat(this.value)||0)" />
+              </div>
+            </div>
+
+            <div class="row-action">
+              <div>
+                <label>ACTION AT BLOCK</label>
+                <select onchange="updateWp(${idx}, 'action', this.value)">
+                  <option value="STOP_AND_WAIT" ${wp.action === 'STOP_AND_WAIT' ? 'selected' : ''}>Stop &amp; Wait (PID Brake)</option>
+                  <option value="PASS_THROUGH" ${wp.action === 'PASS_THROUGH' ? 'selected' : ''}>Pass Through Smoothly</option>
+                  <option value="STOP_AND_HOLD" ${wp.action === 'STOP_AND_HOLD' ? 'selected' : ''}>Final Stop &amp; Hold Pose</option>
+                </select>
+              </div>
+              <div>
+                <label>WAIT (S)</label>
+                <input type="number" step="0.25" min="0" value="${wp.waitSec}"
+                  ${wp.action !== 'STOP_AND_WAIT' ? 'disabled' : ''}
+                  onchange="updateWp(${idx}, 'waitSec', Math.max(0, parseFloat(this.value)||0))" />
+              </div>
+              <div>
+                <label>MAX SPD</label>
+                <input type="number" step="0.05" min="0.15" max="1.0" value="${wp.speed}"
+                  onchange="updateWp(${idx}, 'speed', Math.min(1.0, Math.max(0.15, parseFloat(this.value)||0.5)))" />
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function selectWaypoint(idx) { selectedIndex = idx; drawField(); }
+    function updateWp(idx, key, val) {
+      waypoints[idx][key] = val;
+      if (key === 'action' && val !== 'STOP_AND_WAIT') {
+        waypoints[idx].waitSec = 0.0;
+      }
+      refreshAll();
+    }
+    function deleteWaypoint(idx) {
+      waypoints.splice(idx, 1);
+      if (selectedIndex >= waypoints.length) selectedIndex = waypoints.length - 1;
+      refreshAll();
+    }
+
+    function addDefaultWaypoint() {
+      const last = waypoints.length > 0 ? waypoints[waypoints.length - 1] : { x: 0, y: 0, heading: 0 };
+      if (waypoints.length > 0 && waypoints[waypoints.length - 1].action === 'STOP_AND_HOLD') {
+        waypoints[waypoints.length - 1].action = 'STOP_AND_WAIT';
+        waypoints[waypoints.length - 1].waitSec = 0.5;
+      }
+      waypoints.push({
+        x: Math.max(-36, Math.min(36, last.x + 12)),
+        y: last.y,
+        heading: last.heading,
+        action: 'STOP_AND_HOLD',
+        waitSec: 0.0,
+        speed: 0.50,
+        label: `Dot ${waypoints.length + 1}`
+      });
+      selectedIndex = waypoints.length - 1;
+      refreshAll();
+    }
+
+    function clearWaypoints() {
+      waypoints = [];
+      selectedIndex = -1;
+      stopSimulation();
+      refreshAll();
+    }
+
+    function loadPreset(name) {
+      stopSimulation();
+      if (name === 'baseline') {
+        waypoints = [
+          { x: 24.5, y: 0.0,  heading: 90.0,  action: 'STOP_AND_WAIT', waitSec: 0.5, speed: 0.50, label: 'Dot 1' },
+          { x: 24.5, y: 24.0, heading: 180.0, action: 'STOP_AND_WAIT', waitSec: 0.5, speed: 0.50, label: 'Dot 2' },
+          { x: 0.0,  y: 24.0, heading: -90.0, action: 'STOP_AND_WAIT', waitSec: 0.5, speed: 0.50, label: 'Dot 3' },
+          { x: 0.0,  y: 0.0,  heading: 0.0,   action: 'STOP_AND_HOLD', waitSec: 0.0, speed: 0.50, label: 'Dot 4' }
+        ];
+      } else if (name === 'square') {
+        waypoints = [
+          { x: 24.0, y: 0.0,  heading: 0.0, action: 'STOP_AND_WAIT', waitSec: 0.5, speed: 0.50, label: 'Corner 1 (Fwd 24")' },
+          { x: 24.0, y: 24.0, heading: 0.0, action: 'STOP_AND_WAIT', waitSec: 0.5, speed: 0.50, label: 'Corner 2 (Left 24")' },
+          { x: 0.0,  y: 24.0, heading: 0.0, action: 'STOP_AND_WAIT', waitSec: 0.5, speed: 0.50, label: 'Corner 3 (Back)' },
+          { x: 0.0,  y: 0.0,  heading: 0.0, action: 'STOP_AND_HOLD', waitSec: 0.0, speed: 0.50, label: 'Origin (0, 0, 0°)' }
+        ];
+      } else if (name === 'zigzag') {
+        waypoints = [
+          { x: 18.0, y: 12.0,  heading: 0.0,  action: 'PASS_THROUGH',  waitSec: 0.0, speed: 0.55, label: 'Curve Left' },
+          { x: 30.0, y: -12.0, heading: 45.0, action: 'STOP_AND_WAIT', waitSec: 1.0, speed: 0.50, label: 'Score Sample (45°)' },
+          { x: 18.0, y: 0.0,   heading: 0.0,  action: 'PASS_THROUGH',  waitSec: 0.0, speed: 0.55, label: 'Mid Return' },
+          { x: 0.0,  y: 0.0,   heading: 0.0,  action: 'STOP_AND_HOLD', waitSec: 0.0, speed: 0.50, label: 'Park at Origin' }
+        ];
+      } else if (name === 'outback') {
+        waypoints = [
+          { x: 30.0, y: 0.0, heading: 180.0, action: 'STOP_AND_WAIT', waitSec: 1.5, speed: 0.50, label: 'Drive 30" & Spin 180°' },
+          { x: 0.0,  y: 0.0, heading: 0.0,   action: 'STOP_AND_HOLD', waitSec: 0.0, speed: 0.50, label: 'Return to (0, 0, 0°)' }
+        ];
+      }
+      selectedIndex = 0;
+      refreshAll();
+    }
+
+    function toggleSimulation() {
+      if (simRunning) {
+        stopSimulation();
+      } else {
+        if (waypoints.length === 0) return;
+        simRunning = true;
+        simRobot = { x: 0, y: 0, heading: 0, targetIdx: 0, waitTimer: 0 };
+        lastSimTimestamp = performance.now();
+        document.getElementById('btnSim').textContent = '⏹ Stop';
+        simAnimId = requestAnimationFrame(stepSimulation);
+      }
+    }
+
+    function stopSimulation() {
+      simRunning = false;
+      if (simAnimId) cancelAnimationFrame(simAnimId);
+      document.getElementById('btnSim').textContent = '▶ Simulate';
+      drawField();
+    }
+
+    function stepSimulation(ts) {
+      if (!simRunning) return;
+      const dt = Math.min(0.05, (ts - lastSimTimestamp) / 1000);
+      lastSimTimestamp = ts;
+
+      if (simRobot.targetIdx >= waypoints.length) {
+        stopSimulation();
+        return;
+      }
+
+      const wp = waypoints[simRobot.targetIdx];
+      const dx = wp.x - simRobot.x;
+      const dy = wp.y - simRobot.y;
+      const dist = Math.hypot(dx, dy);
+
+      let dHeading = ((wp.heading - simRobot.heading + 540) % 360) - 180;
+      const isPassThroughSeg = (wp.action === 'PASS_THROUGH' && simRobot.targetIdx < waypoints.length - 1);
+      const arriveRadius = isPassThroughSeg ? 2.8 : 0.4;
+
+      // Turn continuously during movement
+      const turnRate = 260.0 * dt;
+      if (Math.abs(dHeading) <= turnRate) {
+        simRobot.heading = wp.heading;
+      } else {
+        simRobot.heading += Math.sign(dHeading) * turnRate;
+      }
+
+      if (isPassThroughSeg && dist <= arriveRadius) {
+        // Immediately flow into the next waypoint without stopping or waiting for heading
+        simRobot.waitTimer = 0;
+        simRobot.targetIdx++;
+      } else if (!isPassThroughSeg && dist < arriveRadius && Math.abs(dHeading) < 2.0) {
+        if (wp.action === 'STOP_AND_WAIT' && simRobot.waitTimer < wp.waitSec) {
+          simRobot.waitTimer += dt;
+        } else {
+          simRobot.waitTimer = 0;
+          simRobot.targetIdx++;
+        }
+      } else {
+        const moveSpeedInPerSec = wp.speed * 46.0;
+        const step = Math.min(dist, moveSpeedInPerSec * dt);
+        if (dist > 0.01) {
+          simRobot.x += (dx / dist) * step;
+          simRobot.y += (dy / dist) * step;
+        }
+      }
+
+      drawField();
+      simAnimId = requestAnimationFrame(stepSimulation);
+    }
+
+    function generateJavaSource() {
+      const className = getCleanClassName();
+      const modeType = document.getElementById('opModeType').value;
+      const annotation = modeType === 'Autonomous'
+        ? `@Autonomous(name = "${className} (Visual Planner)", group = "AutoPathingFTC")`
+        : `@TeleOp(name = "${className} (Visual Planner)", group = "AutoPathingFTC")`;
+      const importAnnotation = modeType === 'Autonomous'
+        ? 'import com.qualcomm.robotcore.eventloop.opmode.Autonomous;'
+        : 'import com.qualcomm.robotcore.eventloop.opmode.TeleOp;';
+
+      const wpLines = waypoints.map((wp, i) => {
+        const safeLabel = (wp.label || `Dot ${i + 1}`).replace(/"/g, '\\"');
+        return `            new Waypoint(${wp.x.toFixed(2)}, ${wp.y.toFixed(2)}, ${wp.heading.toFixed(1)}, ActionType.${wp.action}, ${wp.waitSec.toFixed(2)}, ${wp.speed.toFixed(2)}, "${safeLabel}")`;
+      }).join(',\n');
+
+      return `package org.firstinspires.ftc.teamcode;
+
+import com.qualcomm.hardware.gobilda.GoBildaPinpointDriver;
+${importAnnotation}
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.util.ElapsedTime;
+import com.qualcomm.robotcore.util.Range;
+
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.Pose2D;
+import org.firstinspires.ftc.robotcore.external.navigation.UnnormalizedAngleUnit;
+
+${annotation}
+public class ${className} extends LinearOpMode {
+
+    public enum ActionType {
+        STOP_AND_WAIT,
+        PASS_THROUGH,
+        STOP_AND_HOLD
+    }
+
+    public static class Waypoint {
+        public final double xInches, yInches, headingDeg, waitSeconds, maxSpeed;
+        public final ActionType action;
+        public final String label;
+
+        public Waypoint(double xInches, double yInches, double headingDeg,
+                        ActionType action, double waitSeconds, double maxSpeed, String label) {
+            this.xInches = xInches;
+            this.yInches = yInches;
+            this.headingDeg = headingDeg;
+            this.action = action;
+            this.waitSeconds = waitSeconds;
+            this.maxSpeed = maxSpeed;
+            this.label = label;
+        }
+    }
+
+    // ================= VISUAL PLANNER WAYPOINTS (DOTS) =================
+    private static final Waypoint[] PATH = new Waypoint[] {
+${wpLines}
+    };
+
+    private static final String PINPOINT_NAME    = "odo";
+    private static final String FRONT_RIGHT_NAME = "motor1";
+    private static final String BACK_RIGHT_NAME  = "motor2";
+    private static final String FRONT_LEFT_NAME  = "motor3";
+    private static final String BACK_LEFT_NAME   = "motor4";
+
+    private static final double KP_FORWARD = 0.085, KI_FORWARD = 0.025, KD_FORWARD = 0.012, MIN_FORWARD_POWER = 0.075;
+    private static final double KP_STRAFE  = 0.130, KI_STRAFE  = 0.045, KD_STRAFE  = 0.015, MIN_STRAFE_POWER  = 0.135;
+    private static final double KP_HEADING = 1.05,  KI_HEADING = 0.15,  KD_HEADING = 0.04,  MIN_TURN_POWER    = 0.09;
+    private static final double MAX_TURN_SPEED = 0.55;
+
+    private static final double STOP_TOLERANCE_INCHES  = 0.20;
+    private static final double PASS_THROUGH_RADIUS_IN = 3.50;
+    private static final double HEADING_TOLERANCE_DEG  = 1.0;
+    private static final double INTEGRAL_ZONE_INCHES   = 3.5;
+    private static final double MAX_INTEGRAL_POWER     = 0.12;
+
+    private GoBildaPinpointDriver odo;
+    private DcMotorEx frontRight, backRight, frontLeft, backLeft;
+
+    private double poseX = 0.0, poseY = 0.0, poseHeading = 0.0;
+    private double velX = 0.0, velY = 0.0, velHeading = 0.0;
+    private double integralFwd = 0.0, integralStrafe = 0.0, integralTurn = 0.0;
+
+    private final ElapsedTime loopTimer = new ElapsedTime();
+    private final ElapsedTime waitTimer = new ElapsedTime();
+    private boolean currentlyBraking = false;
+
+    private double forwardSign = -1.0, strafeSign = 1.0, turnSign = 1.0;
+    private int currentIndex = 0;
+    private boolean waitingAtDot = false;
+    private boolean lastX = false, lastY = false, lastB = false, lastRB = false;
+
+    @Override
+    public void runOpMode() {
+        frontRight = hardwareMap.get(DcMotorEx.class, FRONT_RIGHT_NAME);
+        backRight  = hardwareMap.get(DcMotorEx.class, BACK_RIGHT_NAME);
+        frontLeft  = hardwareMap.get(DcMotorEx.class, FRONT_LEFT_NAME);
+        backLeft   = hardwareMap.get(DcMotorEx.class, BACK_LEFT_NAME);
+
+        frontLeft.setDirection(DcMotor.Direction.REVERSE);
+        backLeft.setDirection(DcMotor.Direction.REVERSE);
+        frontRight.setDirection(DcMotor.Direction.FORWARD);
+        backRight.setDirection(DcMotor.Direction.FORWARD);
+
+        frontLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        frontRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        backLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        backRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+        setZeroPowerMode(DcMotor.ZeroPowerBehavior.BRAKE);
+
+        odo = hardwareMap.get(GoBildaPinpointDriver.class, PINPOINT_NAME);
+        odo.setOffsets(0.0, 0.0, DistanceUnit.MM);
+        odo.setEncoderResolution(GoBildaPinpointDriver.GoBildaOdometryPods.goBILDA_4_BAR_POD);
+        odo.setEncoderDirections(
+                GoBildaPinpointDriver.EncoderDirection.FORWARD,
+                GoBildaPinpointDriver.EncoderDirection.REVERSED
+        );
+        odo.resetPosAndIMU();
+
+        telemetry.addData("Status", "${className} Ready (%d Waypoints)", PATH.length);
+        telemetry.update();
+
+        waitForStart();
+        resetOriginAndRestart();
+
+        while (opModeIsActive()) {
+            double dt = loopTimer.seconds();
+            loopTimer.reset();
+            if (dt <= 0.0 || dt > 0.2) dt = 0.02;
+
+            updateOdometry();
+
+            if (gamepad1.a) resetOriginAndRestart();
+            if ((gamepad1.right_bumper && !lastRB) || gamepad1.dpad_up) {
+                currentIndex = 0;
+                waitingAtDot = false;
+                clearIntegrals();
+            }
+            if (gamepad1.x && !lastX) forwardSign = -forwardSign;
+            if (gamepad1.y && !lastY) strafeSign  = -strafeSign;
+            if (gamepad1.b && !lastB) turnSign    = -turnSign;
+            lastX = gamepad1.x; lastY = gamepad1.y; lastB = gamepad1.b; lastRB = gamepad1.right_bumper;
+
+            if (PATH.length == 0) {
+                setDrivePowers(0, 0, 0, 0);
+                continue;
+            }
+
+            while (currentIndex < PATH.length - 1
+                    && PATH[currentIndex].action == ActionType.PASS_THROUGH
+                    && Math.hypot(PATH[currentIndex].xInches - poseX, PATH[currentIndex].yInches - poseY) <= PASS_THROUGH_RADIUS_IN) {
+                currentIndex++;
+                clearIntegrals();
+            }
+
+            Waypoint target = PATH[Math.min(currentIndex, PATH.length - 1)];
+            boolean isPassThroughSegment = (target.action == ActionType.PASS_THROUGH && currentIndex < PATH.length - 1);
+            double targetHeadingRad = Math.toRadians(target.headingDeg);
+
+            double errorX = target.xInches - poseX;
+            double errorY = target.yInches - poseY;
+            double errorHeading = AngleUnit.normalizeRadians(targetHeadingRad - poseHeading);
+
+            double cosH = Math.cos(-poseHeading);
+            double sinH = Math.sin(-poseHeading);
+
+            double robotForwardError = errorX * cosH - errorY * sinH;
+            double robotLeftError    = errorX * sinH + errorY * cosH;
+
+            double robotVelFwd  = velX * cosH - velY * sinH;
+            double robotVelLeft = velX * sinH + velY * cosH;
+
+            double distToTarget = Math.hypot(errorX, errorY);
+            double headingErrorDeg = Math.abs(Math.toDegrees(errorHeading));
+
+            boolean isAtForward = Math.abs(robotForwardError) < STOP_TOLERANCE_INCHES;
+            boolean isAtStrafe  = Math.abs(robotLeftError) < STOP_TOLERANCE_INCHES;
+            boolean isAtHeading = headingErrorDeg < HEADING_TOLERANCE_DEG;
+            boolean isSettledAtDot = !isPassThroughSegment && isAtForward && isAtStrafe && isAtHeading;
+
+            if (gamepad1.left_bumper) {
+                setZeroPowerMode(DcMotor.ZeroPowerBehavior.FLOAT);
+                setDrivePowers(0, 0, 0, 0);
+                clearIntegrals();
+            } else if (isSettledAtDot) {
+                setDrivePowers(0, 0, 0, 0);
+                clearIntegrals();
+
+                if (target.action == ActionType.STOP_AND_WAIT && currentIndex < PATH.length - 1) {
+                    if (target.waitSeconds <= 0.01) {
+                        waitingAtDot = false;
+                        currentIndex++;
+                    } else {
+                        if (!waitingAtDot) {
+                            waitingAtDot = true;
+                            waitTimer.reset();
+                        }
+                        if (waitTimer.seconds() >= target.waitSeconds) {
+                            waitingAtDot = false;
+                            currentIndex++;
+                        }
+                    }
+                }
+            } else {
+                waitingAtDot = false;
+                setZeroPowerMode(DcMotor.ZeroPowerBehavior.BRAKE);
+
+                double maxSpeed = target.maxSpeed;
+                double forwardCmd = 0.0;
+                double strafeRightCmd = 0.0;
+
+                if (isPassThroughSegment && distToTarget > 0.05) {
+                    double dirFwd = robotForwardError / distToTarget;
+                    double dirRight = (-robotLeftError) / distToTarget;
+                    forwardCmd = forwardSign * dirFwd * maxSpeed;
+                    strafeRightCmd = strafeSign * dirRight * maxSpeed;
+                    integralFwd = 0.0;
+                    integralStrafe = 0.0;
+                } else {
+                    if (Math.abs(robotForwardError) < INTEGRAL_ZONE_INCHES && !isAtForward) {
+                        integralFwd = Range.clip(integralFwd + robotForwardError * dt,
+                                -MAX_INTEGRAL_POWER / KI_FORWARD, MAX_INTEGRAL_POWER / KI_FORWARD);
+                    } else integralFwd = 0.0;
+
+                    if (Math.abs(robotLeftError) < INTEGRAL_ZONE_INCHES && !isAtStrafe) {
+                        integralStrafe = Range.clip(integralStrafe + (-robotLeftError) * dt,
+                                -MAX_INTEGRAL_POWER / KI_STRAFE, MAX_INTEGRAL_POWER / KI_STRAFE);
+                    } else integralStrafe = 0.0;
+
+                    double translationScale = (headingErrorDeg > 25.0) ? 0.85 : 1.0;
+
+                    if (!isAtForward) {
+                        double dTerm = KD_FORWARD * robotVelFwd;
+                        double pidFwd = (KP_FORWARD * robotForwardError) + (KI_FORWARD * integralFwd) - dTerm;
+                        forwardCmd = applyMinPower(forwardSign * pidFwd * translationScale, MIN_FORWARD_POWER, maxSpeed);
+                    }
+
+                    if (!isAtStrafe) {
+                        double dTerm = KD_STRAFE * (-robotVelLeft);
+                        double pidStrafe = (KP_STRAFE * (-robotLeftError)) + (KI_STRAFE * integralStrafe) - dTerm;
+                        strafeRightCmd = applyMinPower(strafeSign * pidStrafe * translationScale, MIN_STRAFE_POWER, maxSpeed);
+                    }
+                }
+
+                if (headingErrorDeg < 15.0 && !isAtHeading) {
+                    integralTurn = Range.clip(integralTurn + (-errorHeading) * dt,
+                            -MAX_INTEGRAL_POWER / KI_HEADING, MAX_INTEGRAL_POWER / KI_HEADING);
+                } else integralTurn = 0.0;
+
+                double turnRightCmd = 0.0;
+                if (!isAtHeading) {
+                    double dTurn = isPassThroughSegment ? 0.0 : (KD_HEADING * (-velHeading));
+                    double pidTurn = (KP_HEADING * (-errorHeading)) + (KI_HEADING * integralTurn) - dTurn;
+                    turnRightCmd = applyMinPower(turnSign * pidTurn, MIN_TURN_POWER, MAX_TURN_SPEED);
+                }
+
+                double flPower = forwardCmd + strafeRightCmd + turnRightCmd;
+                double frPower = forwardCmd - strafeRightCmd - turnRightCmd;
+                double blPower = forwardCmd - strafeRightCmd + turnRightCmd;
+                double brPower = forwardCmd + strafeRightCmd - turnRightCmd;
+
+                double maxWheel = Math.max(
+                        Math.max(Math.abs(flPower), Math.abs(frPower)),
+                        Math.max(Math.abs(blPower), Math.abs(brPower))
+                );
+                if (maxWheel > maxSpeed) {
+                    flPower = (flPower / maxWheel) * maxSpeed;
+                    frPower = (frPower / maxWheel) * maxSpeed;
+                    blPower = (blPower / maxWheel) * maxSpeed;
+                    brPower = (brPower / maxWheel) * maxSpeed;
+                }
+
+                setDrivePowers(flPower, frPower, blPower, brPower);
+            }
+
+            telemetry.addData("Active Dot", "%d / %d (%s)", currentIndex + 1, PATH.length, target.label);
+            telemetry.addData("Target (X, Y, H)", "(%.1f in, %.1f in, %.1f°)",
+                    target.xInches, target.yInches, target.headingDeg);
+            telemetry.addData("Robot  (X, Y, H)", "(%.2f in, %.2f in, %.1f°)",
+                    poseX, poseY, Math.toDegrees(poseHeading));
+            telemetry.update();
+        }
+    }
+
+    private void clearIntegrals() { integralFwd = 0.0; integralStrafe = 0.0; integralTurn = 0.0; }
+
+    private void setZeroPowerMode(DcMotor.ZeroPowerBehavior mode) {
+        if (currentlyBraking == (mode == DcMotor.ZeroPowerBehavior.BRAKE)) return;
+        currentlyBraking = (mode == DcMotor.ZeroPowerBehavior.BRAKE);
+        frontLeft.setZeroPowerBehavior(mode);
+        frontRight.setZeroPowerBehavior(mode);
+        backLeft.setZeroPowerBehavior(mode);
+        backRight.setZeroPowerBehavior(mode);
+    }
+
+    private double applyMinPower(double command, double minPower, double maxPower) {
+        if (Math.abs(command) < 1e-6) return 0.0;
+        double sign = Math.signum(command);
+        double magnitude = Math.max(Math.abs(command), minPower);
+        return Range.clip(sign * magnitude, -maxPower, maxPower);
+    }
+
+    private void updateOdometry() {
+        odo.update();
+        Pose2D pinpointPose = odo.getPosition();
+        poseX = pinpointPose.getX(DistanceUnit.INCH);
+        poseY = pinpointPose.getY(DistanceUnit.INCH);
+        poseHeading = pinpointPose.getHeading(AngleUnit.RADIANS);
+        velX = odo.getVelX(DistanceUnit.INCH);
+        velY = odo.getVelY(DistanceUnit.INCH);
+        velHeading = odo.getHeadingVelocity(UnnormalizedAngleUnit.RADIANS);
+    }
+
+    private void resetOriginAndRestart() {
+        setDrivePowers(0, 0, 0, 0);
+        odo.setPosition(new Pose2D(DistanceUnit.INCH, 0, 0, AngleUnit.RADIANS, 0));
+        odo.update();
+        poseX = 0.0; poseY = 0.0; poseHeading = 0.0;
+        currentIndex = 0; waitingAtDot = false;
+        clearIntegrals(); loopTimer.reset();
+    }
+
+    private void setDrivePowers(double fl, double fr, double bl, double br) {
+        frontLeft.setPower(fl); frontRight.setPower(fr);
+        backLeft.setPower(bl);  backRight.setPower(br);
+    }
+}
+`;
+    }
+
+    function refreshOutput() {
+      let totalDist = 0;
+      let prev = { x: 0, y: 0 };
+      waypoints.forEach(wp => {
+        totalDist += Math.hypot(wp.x - prev.x, wp.y - prev.y);
+        prev = wp;
+      });
+      document.getElementById('totalDistReadout').textContent = `${totalDist.toFixed(1)} in`;
+      const cls = getCleanClassName();
+      document.getElementById('fileNameLabel').textContent = `${cls}.java`;
+      document.getElementById('codePreview').textContent = generateJavaSource();
+    }
+
+    function refreshAll() {
+      drawField();
+      renderWaypointList();
+      refreshOutput();
+    }
+
+    function copyJavaCode() {
+      const code = generateJavaSource();
+      if (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.autoPathBridge) {
+        window.webkit.messageHandlers.autoPathBridge.postMessage({ action: 'copy', code: code });
+        showToast('★ COPIED TO CLIPBOARD!');
+      } else {
+        navigator.clipboard.writeText(code).then(() => showToast('★ COPIED TO CLIPBOARD!'));
+      }
+    }
+
+    function downloadJavaFile() {
+      const cls = getCleanClassName();
+      const fileName = `${cls}.java`;
+      const code = generateJavaSource();
+      if (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.autoPathBridge) {
+        window.webkit.messageHandlers.autoPathBridge.postMessage({
+          action: 'saveDialog',
+          fileName: fileName,
+          code: code
+        });
+      } else {
+        const blob = new Blob([code], { type: 'text/x-java-source;charset=utf-8' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = fileName;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        showToast(`★ DOWNLOADED ${fileName}`);
+      }
+    }
+
+    function sendToAndroidStudio() {
+      const cls = getCleanClassName();
+      const fileName = `${cls}.java`;
+      const code = generateJavaSource();
+      if (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.autoPathBridge) {
+        window.webkit.messageHandlers.autoPathBridge.postMessage({
+          action: 'sendToTeamCode',
+          fileName: fileName,
+          code: code
+        });
+      } else {
+        downloadJavaFile();
+      }
+    }
+
+    // Ensure canvas re-renders once the embedded Minecraft pixel font finishes loading
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(() => drawField());
+    }
+    refreshAll();
+  </script>
+</body>
+</html>

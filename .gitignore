@@ -1,0 +1,58 @@
+# ───────────── Secrets / local config ─────────────
+.env
+.env.*
+!.env.example
+*.pem
+*.p12
+*.mobileprovision
+
+# ───────────── Build output ─────────────
+build/
+*.app/
+*.dSYM/
+DerivedData/
+*.o
+*.swiftmodule
+*.swiftdoc
+
+# ───────────── Swift / Xcode ─────────────
+*.xcodeproj/xcuserdata/
+*.xcworkspace/xcuserdata/
+xcuserdata/
+.swiftpm/
+.build/
+
+# ───────────── Java / Android / Gradle (if you add a full FTC project) ─────────────
+*.class
+*.apk
+*.aab
+*.dex
+.gradle/
+local.properties
+captures/
+*.hprof
+
+# ───────────── IDEs ─────────────
+.vscode/
+.idea/
+*.iml
+*.swp
+*~
+
+# ───────────── OS files ─────────────
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# ───────────── Python helpers ─────────────
+__pycache__/
+*.pyc
+
+# ───────────── Notes / large media (keep repo lean) ─────────────
+.obsidian/
+*.mp4
+*.mov
