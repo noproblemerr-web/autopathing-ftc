@@ -13,7 +13,6 @@
 ![Last commit](https://img.shields.io/github/last-commit/noproblemerr-web/autopathing-ftc)
 ![Status](https://img.shields.io/badge/status-active%20development-blue)
 
-<!-- MEDIA: Hero screenshot (recommended 1600×1000). Save as docs/media/hero.png -->
 <img src="docs/media/hero.png" alt="AutoPathingFTC planner: waypoints on the field map, inspector panel, and generated Java code" width="900">
 
 </div>
@@ -45,7 +44,6 @@ Writing FTC autonomous routines by hand usually means guessing coordinates, reco
 
 The control loop was tuned and verified on a physical competition robot (see [`teamcode/DirekAutoPath.java`](teamcode/DirekAutoPath.java)).
 
-<!-- MEDIA: GIF of the real robot following a generated path (≤10 MB, ~720p). Save as docs/media/robot-run.gif -->
 <p align="center"><img src="docs/media/robot-run.gif" alt="Robot following a generated 24-inch box path" width="600"></p>
 
 ---
@@ -76,7 +74,6 @@ The control loop was tuned and verified on a physical competition robot (see [`t
 - **Send to TeamCode** writes the `.java` file directly into your project. The folder is chosen once and remembered, and **existing files are never overwritten without confirmation.**
 - Native Save dialog, clipboard integration, and standard Edit menu shortcuts.
 
-<!-- MEDIA: GIF of placing dots with grid snap + straight-line lock guides (~15 s). Save as docs/media/snapping.gif -->
 <p align="center"><img src="docs/media/snapping.gif" alt="Grid snapping and straight-line lock in action" width="700"></p>
 
 ---
