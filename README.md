@@ -51,6 +51,9 @@ The control loop was tuned and verified on a physical competition robot (see [`t
 ## Key Features
 
 ### Planner
+- **Dual planning modes:**
+  - **🗺️ Path Mode (`Dot 1 → 2 → 3 → 4`):** Plan a sequential multi-waypoint autonomous routine (`@Autonomous` or `@TeleOp`).
+  - **🎮 4-Button Mode (`A / B / X / Y → Start`):** Assign each Gamepad 1 face button (`A`, `B`, `X`, `Y`) its own multi-dot route (`A1, A2, ...`) with optional **Auto-Return to Start `(0, 0, 0°)`**, per-button simulation (**▶ Test A/B/X/Y**), and `@TeleOp` export (`DirekFourButtonMacros.java`).
 - **Click-to-place waypoints** on a 96″ × 96″ workspace centered on the robot's start pose `(0, 0, 0°)`, with a drag-to-edit and numeric inspector.
 - **Grid point snapping** (1″, 3″, 6″, 12″ intervals) with visible snap pegs and a live target reticle.
 - **Magnetic straight-line lock:** When a dot is within 3″ of the previous dot, the next dot, or the origin, its X or Y locks to match so segments are perfectly horizontal or vertical. Hold <kbd>Shift</kbd> to force axis lock. **Align All Dots** snaps an existing path in one click.
@@ -169,6 +172,16 @@ make install                       # builds build/AutoPathingFTC.app and copies 
 | Hold <kbd>LB</kbd> | Pause and float the wheels (push the robot by hand) |
 | <kbd>X</kbd> / <kbd>Y</kbd> / <kbd>B</kbd> | Flip forward / strafe / turn direction sign |
 
+**Gamepad 1 controls (`DirekFourButtonMacros` — 4-Button Macros)**
+
+| Button | Action |
+| :--- | :--- |
+| <kbd>A</kbd> / <kbd>B</kbd> / <kbd>X</kbd> / <kbd>Y</kbd> | Run that button's multi-dot `Waypoint[]` macro (and auto-return to Start if enabled) |
+| <kbd>Left Stick</kbd> / <kbd>Right Stick</kbd> / <kbd>RB</kbd> | Cancel any running macro and return immediately to manual mecanum drive |
+| <kbd>D-pad ↑</kbd> | Return directly to Starting Origin `(0, 0, 0°)` |
+| <kbd>D-pad ↓</kbd> | Re-zero Starting Origin `(0, 0, 0°)` at current robot pose |
+| Hold <kbd>LB</kbd> | Float wheels (`ZeroPowerBehavior.FLOAT`) to push robot freely by hand |
+
 ---
 
 ## Configuration
@@ -222,8 +235,9 @@ autopathing-ftc/
 │       ├── main.swift            # WKWebView host + JS bridge (copy / save / send to TeamCode)
 │       └── Info.plist
 ├── teamcode/
-│   ├── DirekAutoPath.java        # Reference follower: verified on hardware (STOP_AND_WAIT path)
-│   └── DirekAutoPathV2.java      # Experimental: full-speed PASS_THROUGH cruise mode
+│   ├── DirekAutoPath.java           # Reference follower: verified on hardware (STOP_AND_WAIT path)
+│   ├── DirekAutoPathV2.java         # Experimental: full-speed PASS_THROUGH cruise mode
+│   └── DirekFourButtonMacros.java   # TeleOp 4-button (A/B/X/Y) multi-dot macro follower
 ├── assets/
 │   └── fonts/                    # Source WOFF2 fonts (embedded in index.html) + OFL licenses
 ├── scripts/
